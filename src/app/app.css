@@ -1,0 +1,101 @@
+/* Page Background */
+.page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("https://newsinfo.inquirer.net/files/2022/10/EASTERN-VISAYAS-STATE-UNIVERSITY-TACLOBAN-10262022.png")
+    no-repeat center center/cover;
+  position: relative;
+}
+
+/* Dark Overlay for Better Contrast */
+.page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+}
+
+/* Glass Card */
+.login-card {
+  width: 360px;
+  padding: 32px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  color: #fff;
+  z-index: 1;
+}
+
+/* Logo */
+.logo {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin-bottom: 16px;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+/* Title */
+.login-card h2 {
+  margin-bottom: 6px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.subtitle {
+  font-size: 14px;
+  opacity: 0.85;
+  margin-bottom: 22px;
+}
+
+/* Labels */
+label {
+  float: left;
+  margin-top: 10px;
+  font-size: 15px;
+  color: #f3f3f3;
+}
+
+/* Inputs */
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 6px 0 17px;
+  border: none;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 15px;
+}
+
+/* Button (Centered) */
+button {
+  display: block;        /* makes centering possible */
+  margin: 0 auto;        /* centers the button */
+  width: 80%;            /* optional: looks cleaner */
+  padding: 12px;
+  border: none;
+  background: #1e6aff;
+  color: #fff;
+  font-size: 17px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #1453c9;
+  transform: scale(1.03);
+}
+
+/* Message */
+.message {
+  margin-top: 17px;
+  font-weight: bold;
+  color: #ffe;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
