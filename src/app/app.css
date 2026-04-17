@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url("https://newsinfo.inquirer.net/files/2022/10/EASTERN-VISAYAS-STATE-UNIVERSITY-TACLOBAN-10262022.png")
+  background: url("/VSU.jpg")
     no-repeat center center/cover;
   position: relative;
 }
