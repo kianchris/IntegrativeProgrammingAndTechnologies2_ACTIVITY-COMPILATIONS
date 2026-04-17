@@ -1,17 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router, RouterOutlet } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
-import { RegisteredUser, RegisterComponent } from './register/register.component';
+import { RegisterComponent } from './register/register.component';
+import { UserService, RegisteredUser } from './user.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule, CommonModule, RegisterComponent, AdminComponent],
+  imports: [FormsModule, CommonModule, RouterOutlet, RegisterComponent, AdminComponent],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
 export class App {
+  // OOP PRINCIPLE 7: DIP - Inject service abstraction
+  private userService = inject(UserService);
+  readonly router = inject(Router);
 
   // Login fields
   username = '';
@@ -42,8 +47,49 @@ export class App {
   showRegister = false;
   showRegisteredTable = false;
 
-  // CRUD for registered users
-  registeredUsers: RegisteredUser[] = [];
+  /** Dialog open state — managed with a signal so the template stays in sync with navigation. */
+  readonly kianDialogOpen = signal(false);
+
+  /** Hide login shell when viewing portfolio route (router-outlet shows it). */
+  get showLoginShell(): boolean {
+    return !this.isLoggedIn && !this.router.url.startsWith('/portfolio');
+  }
+
+  /** Kian control only on the sign-in form, not on registration. */
+  get showKianOnLoginOnly(): boolean {
+    return this.showLoginShell && !this.showRegister;
+  }
+
+  openKianDialog(): void {
+    this.kianDialogOpen.set(true);
+  }
+
+  closeKianDialog(): void {
+    this.kianDialogOpen.set(false);
+  }
+
+  goToPortfolioFromKian(): void {
+    this.kianDialogOpen.set(false);
+    void this.router.navigate(['/portfolio']);
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onDocumentKeydown(event: KeyboardEvent): void {
+    if (event.key !== 'Escape' || !this.kianDialogOpen()) {
+      return;
+    }
+    event.preventDefault();
+    this.closeKianDialog();
+  }
+
+  // OOP PRINCIPLE 2: ABSTRACTION - Use service getter
+  registeredUsers = [] as RegisteredUser[];
+
+  get users(): RegisteredUser[] {
+    return this.userService.getUsers();
+  }
+
+  // CRUD using service - SRP component orchestrates UI
   editingUserId: number | null = null;
   editingUser: Partial<RegisteredUser> | null = null;
 
@@ -107,6 +153,7 @@ export class App {
     }
 
     this.isLoggedIn = true;
+    this.kianDialogOpen.set(false);
     this.message = '';
     this.submitted = false;
   }
@@ -144,18 +191,13 @@ export class App {
       return;
     }
 
-    // Create new user object with date
-    const newUser: RegisteredUser = {
-      id: Date.now(), // Simple ID using timestamp
+    // OOP PRINCIPLE 1: ENCAPSULATION - Service handles data
+    this.userService.addUser({
       username: this.regUsername,
       email: this.regEmail,
       date: new Date()
-    };
+    });
 
-    // Add to registered users table (unshift for newest first)
-    this.registeredUsers.unshift(newUser);
-
-    // After registration, return user to login form
     this.message = 'Registration successful! Please sign in.';
     
     // Reset form
@@ -170,6 +212,7 @@ export class App {
 
   toggleRegister() {
     this.showRegister = !this.showRegister;
+    this.kianDialogOpen.set(false);
     this.message = '';
     this.clearLoginErrors();
     this.clearRegisterErrors();
@@ -186,7 +229,8 @@ export class App {
   }
 
   editUser(id: number) {
-    const user = this.registeredUsers.find(u => u.id === id);
+    // OOP PRINCIPLE 4: POLYMORPHISM - Service method
+    const user = this.userService.findUser(id);
     if (user) {
       this.editingUserId = id;
       this.editingUser = { ...user };
@@ -195,22 +239,16 @@ export class App {
 
   updateUser() {
     if (this.editingUserId !== null && this.editingUser) {
-      const index = this.registeredUsers.findIndex(u => u.id === this.editingUserId);
-      if (index !== -1) {
-        this.registeredUsers[index] = { 
-          ...this.registeredUsers[index], 
-          username: this.editingUser.username || '',
-          email: this.editingUser.email || '',
-          date: this.editingUser.date || new Date()
-        };
-      }
+      // OOP PRINCIPLE 6: OCP - Service update extensible
+      this.userService.updateUser(this.editingUserId, this.editingUser);
       this.cancelEdit();
     }
   }
 
   deleteUser(id: number) {
     if (confirm('Delete this user?')) {
-      this.registeredUsers = this.registeredUsers.filter(u => u.id !== id);
+      // OOP PRINCIPLE 5: SRP - Delegate to service
+      this.userService.deleteUser(id);
     }
   }
 
@@ -221,6 +259,7 @@ export class App {
 
   logout() {
     this.isLoggedIn = false;
+    this.kianDialogOpen.set(false);
     this.message = '';
     this.username = '';
     this.password = '';

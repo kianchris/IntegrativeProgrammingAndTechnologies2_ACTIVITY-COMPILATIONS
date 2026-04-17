@@ -1,15 +1,14 @@
-# Task: Apply 7 OOP principles with comments
+# TODO: Fix Kian Button
 
-Previous: CRUD ✅
+✅ **Step 1:** Create TODO.md with task steps (done)
+✅ **Step 2:** Edit `src/app/app.ts` - Import RouterLink and RouterOutlet, add to imports array (done)
+✅ **Step 3:** Edit `src/app/app.html` - Add `<router-outlet></router-outlet>` after auth section (done)
 
-## Steps:
-- [x] 1. Create TODO + plan
-- [ ] 2. Create src/app/user.service.ts (Encapsulation, Abstraction IUserService interface, SRP data ops)
-- [ ] 3. Add OOP methods (Inheritance BaseUser, Polymorphism update, SOLID OCP/LSP/ISP/DIP injection)
-- [ ] 4. Refactor app.ts/register.component.ts to use service
-- [ ] 5. Update bootstrap/routes for providers
-- [ ] 6. Add comments // OOP PRINCIPLE X: ...
-- [ ] 7. Test functionality unchanged + OOP
-- [ ] 8. Complete
+**Completed Steps:**
+✅ **Step 4:** Remove duplicate inline styles from `src/app/portfolio/portfolio.component.ts` (done)
 
-Starting OOP refactor.
+**Final Step:**
+✅ **Step 5:** Kian button fixed - RouterLink/RouterOutlet added, <router-outlet> in app.html, styles cleaned. Click "Kian" button to view portfolio page. Back button navigates home.
+
+Task complete!
+

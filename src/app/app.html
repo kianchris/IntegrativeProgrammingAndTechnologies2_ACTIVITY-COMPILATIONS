@@ -1,4 +1,51 @@
-<div class="page" *ngIf="!isLoggedIn">
+<div class="page" *ngIf="showLoginShell">
+  <ng-container *ngIf="showKianOnLoginOnly">
+    <button
+      type="button"
+      class="kian-login-btn"
+      (click)="openKianDialog()"
+      aria-haspopup="dialog"
+      [attr.aria-expanded]="kianDialogOpen()"
+      aria-controls="kian-profile-dialog"
+      aria-label="View profile: Kian Chris A. Gio">
+      Kian
+    </button>
+
+    <div
+      *ngIf="kianDialogOpen()"
+      class="kian-formal-overlay"
+      (click)="closeKianDialog()"
+      role="presentation">
+      <div
+        id="kian-profile-dialog"
+        class="kian-formal-dialog"
+        (click)="$event.stopPropagation()"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="kian-dialog-title">
+        <header class="kian-formal-header">
+          <h3 id="kian-dialog-title">Kian Chris A. Gio</h3>
+          <p class="kian-formal-subtitle">Bachelor of Science in Information Technology</p>
+          <p class="kian-formal-meta">Eastern Visayas State University · Dulag Campus</p>
+        </header>
+        <p class="kian-formal-body">
+          Information Technology student specializing in modern web development. Experience with Angular and TypeScript,
+          interface design with maintainable styling, and structured application architecture using object-oriented
+          practices.
+        </p>
+        <ul class="kian-formal-list" aria-label="Areas of focus">
+          <li>Angular standalone components and application services</li>
+          <li>Responsive layout and accessible user interfaces</li>
+          <li>Data validation and CRUD workflows</li>
+        </ul>
+        <footer class="kian-formal-actions">
+          <button type="button" class="kian-formal-btn outline" (click)="closeKianDialog()">Close</button>
+          <button type="button" class="kian-formal-btn solid" (click)="goToPortfolioFromKian()">View full portfolio</button>
+        </footer>
+      </div>
+    </div>
+  </ng-container>
+
   <div class="auth-container">
     <!-- Logo Header -->
     <div class="auth-header">
@@ -74,6 +121,8 @@
     </div>
   </div>
 </div>
+
+<router-outlet></router-outlet>
 
 <app-admin *ngIf="isLoggedIn" [username]="username" (logout)="logout()"></app-admin>
 
