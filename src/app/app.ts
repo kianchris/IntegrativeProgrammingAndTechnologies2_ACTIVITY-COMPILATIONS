@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AdminComponent } from './admin/admin.component';
+import { RegisteredUser, RegisterComponent } from './register/register.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RegisterComponent, AdminComponent],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
@@ -14,16 +16,20 @@ export class App {
   // Login fields
   username = '';
   password = '';
-  
+
   // Register fields
   regUsername = '';
   regEmail = '';
   regPassword = '';
   regConfirmPassword = '';
-  
+
   message = '';
   isLoggedIn = false;
   showRegister = false;
+  showRegisteredTable = false;
+
+  // Registered users array
+  registeredUsers: RegisteredUser[] = [];
 
   // Current date and time for welcome section
   currentDate = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -48,6 +54,10 @@ export class App {
   validateEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+  }
+
+  getFormattedDate(date: Date): string {
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   }
 
   login() {
@@ -82,10 +92,18 @@ export class App {
       return;
     }
 
-    // Mock registration - store username for dashboard
-    this.username = this.regUsername;
-    this.isLoggedIn = true;
-    this.message = 'Registration successful! Welcome to VSU Dashboard.';
+    // Create new user object with date
+    const newUser = {
+      username: this.regUsername,
+      email: this.regEmail,
+      date: new Date()
+    };
+
+    // Add to registered users table (unshift for newest first)
+    this.registeredUsers.unshift(newUser);
+
+    // After registration, return user to login form
+    this.message = 'Registration successful! Please sign in.';
     
     // Reset form
     this.regUsername = '';
@@ -93,11 +111,17 @@ export class App {
     this.regPassword = '';
     this.regConfirmPassword = '';
     this.showRegister = false;
+    this.showRegisteredTable = false;
   }
 
   toggleRegister() {
     this.showRegister = !this.showRegister;
     this.message = '';
+    this.showRegisteredTable = false;
+  }
+
+  toggleRegisteredTable() {
+    this.showRegisteredTable = !this.showRegisteredTable;
   }
 
   logout() {
@@ -110,6 +134,7 @@ export class App {
     this.regPassword = '';
     this.regConfirmPassword = '';
     this.showRegister = false;
+    this.showRegisteredTable = false;
   }
 
 }

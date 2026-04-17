@@ -7,150 +7,63 @@
     </div>
 
     <!-- Toggle Forms -->
-    <div class="auth-card">
+<div class="auth-card" role="form" aria-label="Authentication form">
       <!-- Login Form -->
-      <div *ngIf="!showRegister">
+      <div *ngIf="!showRegister" class="auth-form">
         <h3>Welcome Back</h3>
         <p class="subtitle">Please sign in to your account</p>
 
-        <label>Username</label>
-        <input type="text" [(ngModel)]="username" placeholder="Enter username">
+        <div class="form-field">
+          <label for="login-username">Username</label>
+          <input id="login-username"
+                 type="text" 
+                 [(ngModel)]="username" 
+                 placeholder="Enter username"
+                 aria-label="Username"
+                 aria-describedby="username-help"
+                 role="textbox">
+        </div>
 
-        <label>Password</label>
-        <input type="password" [(ngModel)]="password" placeholder="Enter password">
+        <div class="form-field">
+          <label for="login-password">Password</label>
+          <input id="login-password"
+                 type="password" 
+                 [(ngModel)]="password" 
+                 placeholder="Enter password"
+                 aria-label="Password"
+                 aria-describedby="password-help"
+                 role="textbox">
+        </div>
 
-        <button (click)="login()" class="auth-btn primary">Sign In</button>
+        <button (click)="login()" class="auth-btn primary" aria-label="Sign in to your account">Sign In</button>
         
-        <p class="toggle-link" (click)="toggleRegister()">
+        <p class="toggle-link" (click)="toggleRegister()" role="button" tabindex="0" aria-label="Toggle to sign up form">
           Don't have an account? <strong>Sign Up</strong>
         </p>
       </div>
 
       <!-- Register Form -->
-      <div *ngIf="showRegister">
-        <h3>Create Account</h3>
-        <p class="subtitle">Join VSU Dashboard</p>
-
-        <label>Username</label>
-        <input type="text" [(ngModel)]="regUsername" placeholder="Choose username">
-
-        <label>Email</label>
-        <input type="email" [(ngModel)]="regEmail" placeholder="your@email.com">
-
-        <label>Password</label>
-        <input type="password" [(ngModel)]="regPassword" placeholder="At least 8 chars with upper/lower/number">
-
-        <label>Confirm Password</label>
-        <input type="password" [(ngModel)]="regConfirmPassword" placeholder="Confirm password">
-
-        <button (click)="register()" class="auth-btn primary">Create Account</button>
-        
-        <p class="toggle-link" (click)="toggleRegister()">
-          Already have an account? <strong>Sign In</strong>
-        </p>
-      </div>
+      <app-register
+        *ngIf="showRegister"
+        [regUsername]="regUsername"
+        [regEmail]="regEmail"
+        [regPassword]="regPassword"
+        [regConfirmPassword]="regConfirmPassword"
+        [showRegisteredTable]="showRegisteredTable"
+        [registeredUsers]="registeredUsers"
+        (regUsernameChange)="regUsername = $event"
+        (regEmailChange)="regEmail = $event"
+        (regPasswordChange)="regPassword = $event"
+        (regConfirmPasswordChange)="regConfirmPassword = $event"
+        (registerSubmit)="register()"
+        (toggleRegisteredUsers)="toggleRegisteredTable()"
+        (backToLogin)="toggleRegister()"
+      ></app-register>
 
       <p *ngIf="message" class="message">{{ message }}</p>
     </div>
   </div>
 </div>
 
-<!-- Dashboard remains the same -->
-<div class="dashboard" *ngIf="isLoggedIn">
-  <!-- Header -->
-  <header class="dashboard-header">
-    <div class="header-left">
-      <img src="/VSU.png" alt="VSU Logo" class="header-logo">
-      <h1>VSU Main Dashboard</h1>
-    </div>
-    <div class="header-right">
-      <span>👋 Welcome back, {{username}}!</span>
-      <button class="logout-btn" (click)="logout()">Logout</button>
-    </div>
-  </header>
-
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <nav>
-      <a href="#" class="nav-item active">
-        <span class="icon">📊</span> Dashboard
-      </a>
-      <a href="#" class="nav-item">
-        <span class="icon">👥</span> Students
-      </a>
-      <a href="#" class="nav-item">
-        <span class="icon">📚</span> Courses
-      </a>
-      <a href="#" class="nav-item">
-        <span class="icon">👨‍🏫</span> Faculty
-      </a>
-      <a href="#" class="nav-item">
-        <span class="icon">📈</span> Reports
-      </a>
-    </nav>
-  </aside>
-
-  <!-- Main Content -->
-  <main class="dashboard-main">
-    <!-- Welcome Section -->
-    <section class="welcome-section">
-      <div class="welcome-card">
-        <h2>Welcome back, {{username}}!</h2>
-        <p>Here's what's happening at VSU today. Stay updated with the latest statistics and insights.</p>
-        <div class="welcome-stats">
-          <div class="welcome-stat">
-            <span class="stat-icon">📅</span>
-            <span>{{ currentDate }}</span>
-          </div>
-          <div class="welcome-stat">
-            <span class="stat-icon">🕒</span>
-            <span>{{ currentTime }}</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Stats Cards -->
-    <section class="stats-grid">
-      <div class="stat-card">
-        <h3>Total Students</h3>
-        <div class="stat-number">{{stats.students}}</div>
-        <div class="stat-change positive">+2.3%</div>
-      </div>
-      <div class="stat-card">
-        <h3>Courses</h3>
-        <div class="stat-number">{{stats.courses}}</div>
-        <div class="stat-change positive">+1.1%</div>
-      </div>
-      <div class="stat-card">
-        <h3>Faculty</h3>
-        <div class="stat-number">{{stats.faculty}}</div>
-        <div class="stat-change neutral">0.5%</div>
-      </div>
-      <div class="stat-card">
-        <h3>Enrollment Rate</h3>
-        <div class="stat-number">{{stats.enrollmentRate}}%</div>
-        <div class="stat-change positive">+4.2%</div>
-      </div>
-    </section>
-
-    <!-- Charts Placeholder -->
-    <section class="charts-section">
-      <div class="chart-card">
-        <h3>Enrollment Trend</h3>
-        <div class="chart-placeholder">
-          <div class="bar" style="width: 78%; background: linear-gradient(90deg, #0066cc, #00a651);"></div>
-        </div>
-      </div>
-      <div class="chart-card">
-        <h3>Course Popularity</h3>
-        <div class="chart-placeholder">
-          <div class="bar small" style="width: 45%;"></div>
-          <div class="bar medium" style="width: 62%; margin-left: 20px;"></div>
-          <div class="bar large" style="width: 80%; margin-left: 10px;"></div>
-        </div>
-      </div>
-    </section>
-  </main>
-</div>
+<app-admin *ngIf="isLoggedIn" [username]="username" (logout)="logout()"></app-admin>
 
