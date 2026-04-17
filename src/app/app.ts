@@ -3,15 +3,19 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AdminComponent } from './admin/admin.component';
 import { RegisteredUser, RegisterComponent } from './register/register.component';
+import { PortfolioComponent } from './portfolio/portfolio.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule, CommonModule, RegisterComponent, AdminComponent],
+  imports: [FormsModule, CommonModule, RegisterComponent, AdminComponent, PortfolioComponent],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
 export class App {
+
+  /** When true, `portfolio.component.html` is shown instead of the login/register UI. */
+  showPortfolioView = false;
 
   // Login fields
   username = '';
@@ -107,8 +111,17 @@ export class App {
     }
 
     this.isLoggedIn = true;
+    this.showPortfolioView = false;
     this.message = '';
     this.submitted = false;
+  }
+
+  openPortfolio(): void {
+    this.showPortfolioView = true;
+  }
+
+  closePortfolio(): void {
+    this.showPortfolioView = false;
   }
 
   register() {
