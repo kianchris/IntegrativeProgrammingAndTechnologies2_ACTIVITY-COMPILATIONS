@@ -23,6 +23,20 @@ export class App {
   regPassword = '';
   regConfirmPassword = '';
 
+  // Validation errors
+  loginErrors = {
+    username: '',
+    password: ''
+  };
+  registerErrors = {
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  };
+  submitted = false;
+  registerSubmitted = false;
+
   message = '';
   isLoggedIn = false;
   showRegister = false;
@@ -56,39 +70,75 @@ export class App {
     return emailRegex.test(email);
   }
 
+  clearLoginErrors() {
+    this.loginErrors = { username: '', password: '' };
+  }
+
+  clearRegisterErrors() {
+    this.registerErrors = { username: '', email: '', password: '', confirmPassword: '' };
+  }
+
   getFormattedDate(date: Date): string {
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   }
 
   login() {
-    if (!this.username || !this.password) {
-      this.message = "Please enter username and password!";
-      return;
+    this.submitted = true;
+    this.clearLoginErrors();
+    let hasError = false;
+
+    if (!this.username.trim()) {
+      this.loginErrors.username = 'Username is required';
+      hasError = true;
     }
-    if (!this.validatePassword(this.password)) {
-      this.message = "Password must contain uppercase, lowercase, number, and be at least 8 characters!";
+    if (!this.password) {
+      this.loginErrors.password = 'Password is required';
+      hasError = true;
+    } else if (!this.validatePassword(this.password)) {
+      this.loginErrors.password = 'Password must have uppercase, lowercase, number, and 8+ characters';
+      hasError = true;
+    }
+
+    if (hasError) {
+      this.message = '';
       return;
     }
 
     this.isLoggedIn = true;
     this.message = '';
+    this.submitted = false;
   }
 
   register() {
-    if (!this.regUsername || !this.regEmail || !this.regPassword || !this.regConfirmPassword) {
-      this.message = "Please fill all fields!";
-      return;
+    this.registerSubmitted = true;
+    this.clearRegisterErrors();
+    let hasError = false;
+
+    if (!this.regUsername.trim()) {
+      this.registerErrors.username = 'Username is required';
+      hasError = true;
     }
-    if (!this.validateEmail(this.regEmail)) {
-      this.message = "Please enter a valid email!";
-      return;
+    if (!this.regEmail.trim()) {
+      this.registerErrors.email = 'Email is required';
+      hasError = true;
+    } else if (!this.validateEmail(this.regEmail)) {
+      this.registerErrors.email = 'Please enter a valid email';
+      hasError = true;
     }
-    if (!this.validatePassword(this.regPassword)) {
-      this.message = "Password must be at least 8 chars with upper, lower, and number!";
-      return;
+    if (!this.regPassword) {
+      this.registerErrors.password = 'Password is required';
+      hasError = true;
+    } else if (!this.validatePassword(this.regPassword)) {
+      this.registerErrors.password = 'Password must be at least 8 chars with upper, lower, number';
+      hasError = true;
     }
-    if (this.regPassword !== this.regConfirmPassword) {
-      this.message = "Passwords do not match!";
+    if (this.regConfirmPassword !== this.regPassword) {
+      this.registerErrors.confirmPassword = 'Passwords do not match';
+      hasError = true;
+    }
+
+    if (hasError) {
+      this.message = '';
       return;
     }
 
@@ -112,11 +162,16 @@ export class App {
     this.regConfirmPassword = '';
     this.showRegister = false;
     this.showRegisteredTable = false;
+    this.registerSubmitted = false;
   }
 
   toggleRegister() {
     this.showRegister = !this.showRegister;
     this.message = '';
+    this.clearLoginErrors();
+    this.clearRegisterErrors();
+    this.submitted = false;
+    this.registerSubmitted = false;
     this.showRegisteredTable = false;
   }
 
@@ -135,6 +190,8 @@ export class App {
     this.regConfirmPassword = '';
     this.showRegister = false;
     this.showRegisteredTable = false;
+    this.submitted = false;
+    this.registerSubmitted = false;
   }
 
 }

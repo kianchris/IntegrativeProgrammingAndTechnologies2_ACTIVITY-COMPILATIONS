@@ -12,6 +12,7 @@
       placeholder="Enter username"
       aria-label="Username"
       role="textbox">
+    <div *ngIf="registerSubmitted && registerErrors.username" class="error-message">{{ registerErrors.username }}</div>
   </div>
 
   <div class="form-field">
@@ -24,6 +25,7 @@
       placeholder="Enter email"
       aria-label="Email address"
       role="textbox">
+    <div *ngIf="registerSubmitted && registerErrors.email" class="error-message">{{ registerErrors.email }}</div>
   </div>
 
   <div class="form-field">
@@ -36,6 +38,7 @@
       placeholder="Enter password"
       aria-label="Password"
       role="textbox">
+    <div *ngIf="registerSubmitted && registerErrors.password" class="error-message">{{ registerErrors.password }}</div>
   </div>
 
   <div class="form-field">
@@ -48,6 +51,7 @@
       placeholder="Confirm password"
       aria-label="Confirm password"
       role="textbox">
+    <div *ngIf="registerSubmitted && registerErrors.confirmPassword" class="error-message">{{ registerErrors.confirmPassword }}</div>
   </div>
 
   <button (click)="registerSubmit.emit()" class="auth-btn primary" aria-label="Create account">Create Account</button>

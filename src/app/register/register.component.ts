@@ -21,6 +21,8 @@ export class RegisterComponent {
   @Input() regConfirmPassword = '';
   @Input() showRegisteredTable = false;
   @Input() registeredUsers: RegisteredUser[] = [];
+  @Input() registerErrors: any = {};
+  @Input() registerSubmitted = false;
 
   @Output() regUsernameChange = new EventEmitter<string>();
   @Output() regEmailChange = new EventEmitter<string>();

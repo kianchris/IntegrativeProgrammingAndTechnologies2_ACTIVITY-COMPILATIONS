@@ -22,6 +22,7 @@
                  aria-label="Username"
                  aria-describedby="username-help"
                  role="textbox">
+          <div *ngIf="submitted && loginErrors.username" class="error-message">{{ loginErrors.username }}</div>
         </div>
 
         <div class="form-field">
@@ -33,6 +34,7 @@
                  aria-label="Password"
                  aria-describedby="password-help"
                  role="textbox">
+          <div *ngIf="submitted && loginErrors.password" class="error-message">{{ loginErrors.password }}</div>
         </div>
 
         <button (click)="login()" class="auth-btn primary" aria-label="Sign in to your account">Sign In</button>
@@ -51,6 +53,8 @@
         [regConfirmPassword]="regConfirmPassword"
         [showRegisteredTable]="showRegisteredTable"
         [registeredUsers]="registeredUsers"
+        [registerErrors]="registerErrors"
+        [registerSubmitted]="registerSubmitted"
         (regUsernameChange)="regUsername = $event"
         (regEmailChange)="regEmail = $event"
         (regPasswordChange)="regPassword = $event"
