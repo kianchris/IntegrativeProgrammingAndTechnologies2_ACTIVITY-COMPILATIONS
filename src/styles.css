@@ -178,6 +178,95 @@
   animation: fadeInUp 0.3s ease-out;
 }
 
+/* Table CRUD styles */
+:global(.table-header-row),
+:global(.table-row) {
+  display: grid;
+  grid-template-columns: 80px 1.2fr 1.8fr 1fr;
+  gap: 0.5rem;
+}
+
+:global(.action-cell) {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+:global(.action-btn) {
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  cursor: pointer;
+  border-radius: 0.4rem;
+  font-size: 1rem;
+  padding: 0.4rem;
+  transition: all 0.2s ease;
+  min-width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:global(.edit-btn) {
+  background: rgba(59, 130, 246, 0.3);
+  color: #60a5fa;
+}
+
+:global(.edit-btn:hover) {
+  background: rgba(59, 130, 246, 0.5);
+  transform: scale(1.05);
+}
+
+:global(.delete-btn) {
+  background: rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+:global(.delete-btn:hover) {
+  background: rgba(239, 68, 68, 0.5);
+  transform: scale(1.05);
+}
+
+:global(.modal-overlay) {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+:global(.modal) {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 420px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px);
+}
+
+:global(.modal h4) {
+  margin: 0 0 1rem 0;
+  color: #1e293b;
+}
+
+:global(.modal-actions) {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
 /* Table styles if needed */
 :global(.registered-table-container), :global(.table), :global(.table-cell) {
   /* Add table styles globally if visible */

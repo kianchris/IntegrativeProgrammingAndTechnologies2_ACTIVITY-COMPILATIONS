@@ -1,17 +1,15 @@
-# Task: Add per-field validation + error messages (show on submit only)
+# Task: Apply 7 OOP principles with comments
 
-Previous task: Register design matching login ✅
+Previous: CRUD ✅
 
 ## Steps:
-- [x] 1. Update TODO.md with new plan
-- [x] 2. Add validation logic + errors to app.ts (login/register submitted flags, per-field errors, updated login/register methods, clear on toggle)
-- [x] 3. Update app.html with login error divs (*ngIf="submitted && loginErrors.field")
-- [x] 4. Add @Input registerErrors/registerSubmitted to register.component.ts
-- [x] 5. Update register.component.html with error divs below each input
-- [x] 6. Style .error-message in styles.css (red glassmorphism, animation)
-- [x] 7. Test on http://localhost:51832/ (hot-reloads show errors only on submit)
-- [x] 8. Complete
+- [x] 1. Create TODO + plan
+- [ ] 2. Create src/app/user.service.ts (Encapsulation, Abstraction IUserService interface, SRP data ops)
+- [ ] 3. Add OOP methods (Inheritance BaseUser, Polymorphism update, SOLID OCP/LSP/ISP/DIP injection)
+- [ ] 4. Refactor app.ts/register.component.ts to use service
+- [ ] 5. Update bootstrap/routes for providers
+- [ ] 6. Add comments // OOP PRINCIPLE X: ...
+- [ ] 7. Test functionality unchanged + OOP
+- [ ] 8. Complete
 
-## Current Progress: ✅ All validation + per-field errors implemented. Test: Enter invalid data, click Sign In/Create Account - errors appear below fields. Toggle forms clears. Success proceeds.
-
-Validations: required fields, email regex, password (8+ upper/lower/number).
+Starting OOP refactor.

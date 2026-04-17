@@ -60,6 +60,25 @@
     Already have an account? <strong>Sign In</strong>
   </p>
 
+  <!-- Edit Modal -->
+  <div *ngIf="editingUserId !== null" class="modal-overlay" (click)="cancelEdit.emit()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h4>Edit User</h4>
+      <div class="form-field">
+        <label>Username</label>
+        <input [(ngModel)]="editingUser!.username" placeholder="Username">
+      </div>
+      <div class="form-field">
+        <label>Email</label>
+        <input [(ngModel)]="editingUser!.email" type="email" placeholder="Email">
+      </div>
+      <div class="modal-actions">
+        <button class="auth-btn secondary" (click)="cancelEdit.emit()">Cancel</button>
+        <button class="auth-btn primary" (click)="updateUser.emit()">Update</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Registered users table hidden by default for clean login-like design; toggle via TS if needed -->
   <button class="auth-btn secondary" (click)="toggleRegisteredUsers.emit()" aria-label="Toggle registered users table">
     {{showRegisteredTable ? 'Hide' : 'View'}} Registered Users ({{registeredUsers.length}})
@@ -72,11 +91,20 @@
     </div>
     <div class="table" role="table" aria-label="Recent registrations table">
       <div class="table-header-row" role="rowgroup">
+        <div class="table-cell header" role="columnheader">Actions</div>
         <div class="table-cell header" data-label="Username" role="columnheader">Username</div>
         <div class="table-cell header" data-label="Email" role="columnheader">Email</div>
-        <div class="table-cell header" data-label="Date Registered" role="columnheader">Date Registered</div>
+        <div class="table-cell header" data-label="Date Registered" role="columnheader">Date</div>
       </div>
       <div *ngFor="let user of registeredUsers; let i = index" class="table-row" role="row" [class.new-row]="i === 0">
+        <div class="table-cell action-cell">
+          <button class="action-btn edit-btn" (click)="editUser.emit(user.id)" title="Edit">
+            ✏️
+          </button>
+          <button class="action-btn delete-btn" (click)="deleteUser.emit(user.id)" title="Delete">
+            🗑️
+          </button>
+        </div>
         <div class="table-cell" data-label="Username" role="cell">{{user.username}}</div>
         <div class="table-cell" data-label="Email" role="cell">{{user.email}}</div>
         <div class="table-cell" data-label="Date Registered" role="cell">{{i === 0 ? 'Just now' : (user.date | date:'short')}}</div>

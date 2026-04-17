@@ -42,8 +42,10 @@ export class App {
   showRegister = false;
   showRegisteredTable = false;
 
-  // Registered users array
+  // CRUD for registered users
   registeredUsers: RegisteredUser[] = [];
+  editingUserId: number | null = null;
+  editingUser: Partial<RegisteredUser> | null = null;
 
   // Current date and time for welcome section
   currentDate = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -143,7 +145,8 @@ export class App {
     }
 
     // Create new user object with date
-    const newUser = {
+    const newUser: RegisteredUser = {
+      id: Date.now(), // Simple ID using timestamp
       username: this.regUsername,
       email: this.regEmail,
       date: new Date()
@@ -177,6 +180,43 @@ export class App {
 
   toggleRegisteredTable() {
     this.showRegisteredTable = !this.showRegisteredTable;
+    if (!this.showRegisteredTable) {
+      this.cancelEdit();
+    }
+  }
+
+  editUser(id: number) {
+    const user = this.registeredUsers.find(u => u.id === id);
+    if (user) {
+      this.editingUserId = id;
+      this.editingUser = { ...user };
+    }
+  }
+
+  updateUser() {
+    if (this.editingUserId !== null && this.editingUser) {
+      const index = this.registeredUsers.findIndex(u => u.id === this.editingUserId);
+      if (index !== -1) {
+        this.registeredUsers[index] = { 
+          ...this.registeredUsers[index], 
+          username: this.editingUser.username || '',
+          email: this.editingUser.email || '',
+          date: this.editingUser.date || new Date()
+        };
+      }
+      this.cancelEdit();
+    }
+  }
+
+  deleteUser(id: number) {
+    if (confirm('Delete this user?')) {
+      this.registeredUsers = this.registeredUsers.filter(u => u.id !== id);
+    }
+  }
+
+  cancelEdit() {
+    this.editingUserId = null;
+    this.editingUser = null;
   }
 
   logout() {

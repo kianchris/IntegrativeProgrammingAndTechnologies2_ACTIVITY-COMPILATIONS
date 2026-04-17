@@ -55,6 +55,8 @@
         [registeredUsers]="registeredUsers"
         [registerErrors]="registerErrors"
         [registerSubmitted]="registerSubmitted"
+        [editingUserId]="editingUserId"
+        [editingUser]="editingUser"
         (regUsernameChange)="regUsername = $event"
         (regEmailChange)="regEmail = $event"
         (regPasswordChange)="regPassword = $event"
@@ -62,6 +64,10 @@
         (registerSubmit)="register()"
         (toggleRegisteredUsers)="toggleRegisteredTable()"
         (backToLogin)="toggleRegister()"
+        (editUser)="editUser($event)"
+        (updateUser)="updateUser()"
+        (deleteUser)="deleteUser($event)"
+        (cancelEdit)="cancelEdit()"
       ></app-register>
 
       <p *ngIf="message" class="message">{{ message }}</p>
